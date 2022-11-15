@@ -1,8 +1,22 @@
+let musicas = [
+    {titulo:"Blue Mood", artista:"Robert Munzinger", src:"musicas/Blue Mood - Robert Munzinger.mp3", img:"imagens/freestocks-d96W1K0kgEM-unsplash.jpg"},
+    {titulo:"It Was a Time", artista:"Robson", src:"musicas/It Was a Time - TrackTribe.mp3", img:"imagens/yurii-stupen-eKgDq3Qqhi4-unsplash.jpg"},
+    {titulo:"Put it", artista:"desconhecido", src:"musicas/Put It - TrackTribe.mp3", img:"imagens/yurii-stupen-T4l22ItKhng-unsplash.jpg"},
+];
+
 let musica = document.querySelector("audio");
+
+let duracaoMusica = document.querySelector(".fim");
+let imagem = document.querySelector(".img");
+let nomeMusica = document.querySelector(".descricao h2");
+let nomeArtista = document.querySelector(".descricao i");
+
+duracaoMusica.textContent = segundosParaMinutos(Math.floor(musica.duration));
 
 document.querySelector(".botao-play").addEventListener("click", tocarMusica);
 document.querySelector(".botao-pause").addEventListener("click", pausarMusica);
 musica.addEventListener("timeupdate", atualizarBarra);
+
 
 function tocarMusica() {
     musica.play();
@@ -20,5 +34,15 @@ function atualizarBarra() {
     let barra = document.querySelector("progress");
     barra.style.width = Math.floor((musica.currentTime / musica.duration) * 100) + "%";
     let tempoDecorrido = document.querySelector(".inicio");
-    tempoDecorrido.textContent = Math.floor(musica.currentTime);
+    tempoDecorrido.textContent = segundosParaMinutos(Math.floor(musica.currentTime));
+}
+
+function segundosParaMinutos(segundos) {
+    let CampoMinutos = Math.floor(segundos / 60);
+    let campoSegundos = segundos % 60;
+    if (campoSegundos < 10) {
+        campoSegundos = "0" + campoSegundos
+    }
+
+    return CampoMinutos + ":" + campoSegundos;
 }
