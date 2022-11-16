@@ -1,22 +1,58 @@
 let musicas = [
-    {titulo:"Blue Mood", artista:"Robert Munzinger", src:"musicas/Blue Mood - Robert Munzinger.mp3", img:"imagens/freestocks-d96W1K0kgEM-unsplash.jpg"},
-    {titulo:"It Was a Time", artista:"Robson", src:"musicas/It Was a Time - TrackTribe.mp3", img:"imagens/yurii-stupen-eKgDq3Qqhi4-unsplash.jpg"},
-    {titulo:"Put it", artista:"desconhecido", src:"musicas/Put It - TrackTribe.mp3", img:"imagens/yurii-stupen-T4l22ItKhng-unsplash.jpg"},
+    {titulo:"Blue Mood", artista:"Robert Munzinger", src:"musicas/Blue Mood - Robert Munzinger.mp3", img:"imagens/rock1.jpg"},
+    {titulo:"It Was a Time", artista:"Robson", src:"musicas/It Was a Time - TrackTribe.mp3", img:"imagens/rock2.jpg"},
+    {titulo:"Put it", artista:"desconhecido", src:"musicas/Put It - TrackTribe.mp3", img:"imagens/rock3.jpg"}
 ];
 
 let musica = document.querySelector("audio");
+let indexMusica = 0;
 
 let duracaoMusica = document.querySelector(".fim");
-let imagem = document.querySelector(".img");
+let imagem = document.querySelector("img");
 let nomeMusica = document.querySelector(".descricao h2");
 let nomeArtista = document.querySelector(".descricao i");
 
-duracaoMusica.textContent = segundosParaMinutos(Math.floor(musica.duration));
+renderizarMusica(indexMusica);
+
+//Eventos
 
 document.querySelector(".botao-play").addEventListener("click", tocarMusica);
 document.querySelector(".botao-pause").addEventListener("click", pausarMusica);
 musica.addEventListener("timeupdate", atualizarBarra);
+musica.addEventListener("loadeddata", duration);
 
+document.querySelector(".anterior").addEventListener("click", () => {
+    indexMusica--;
+    if (indexMusica < 0) {
+        indexMusica = 2;
+    }
+    renderizarMusica(indexMusica);
+});
+
+document.querySelector(".proximo").addEventListener("click", () => {
+    indexMusica++;
+    if (indexMusica > 2){
+        indexMusica = 0;
+    }
+    renderizarMusica(indexMusica);
+});
+
+//Funções
+
+function renderizarMusica(index) {
+    musica.setAttribute("src", musicas[index].src);
+    musica.addEventListener("loadeddata", () => {
+        nomeMusica.textContent = musicas[index].titulo;
+        nomeArtista.textContent = musicas[index].artista;
+        imagem.src = musicas[index].img;
+    });
+}
+
+function duration(){
+
+    duracaoMusica.textContent = segundosParaMinutos(Math.floor(musica.duration));
+
+}
 
 function tocarMusica() {
     musica.play();
@@ -46,3 +82,4 @@ function segundosParaMinutos(segundos) {
 
     return CampoMinutos + ":" + campoSegundos;
 }
+
